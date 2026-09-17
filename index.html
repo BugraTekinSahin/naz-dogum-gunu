@@ -49,6 +49,13 @@ body::before{
 .balloon.popped .b-sway{transform:scale(1.5);opacity:0;animation:none}
 @keyframes sway{from{transform:translateX(-10px) rotate(-5deg)}to{transform:translateX(10px) rotate(5deg)}}
 
+/* ---------- credit ---------- */
+.credit{
+  position:absolute;z-index:30;top:calc(14px + env(safe-area-inset-top));left:14px;
+  font-size:13px;font-weight:700;color:var(--ink-soft);
+  background:#fff9;padding:4px 12px;border-radius:999px;box-shadow:0 4px 12px #c0707022;
+}
+
 /* ---------- music button ---------- */
 .music-btn{
   position:fixed;z-index:40;top:calc(12px + env(safe-area-inset-top));right:12px;
@@ -62,7 +69,7 @@ body::before{
 .stage{
   position:relative;z-index:2;min-height:100svh;pointer-events:none;
   display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px;text-align:center;
-  padding:calc(28px + env(safe-area-inset-top)) 16px calc(28px + env(safe-area-inset-bottom));
+  padding:calc(56px + env(safe-area-inset-top)) 16px calc(28px + env(safe-area-inset-bottom));
 }
 .kicker{font-family:'Caveat',cursive;font-size:clamp(22px,6vw,28px);color:var(--pink-d);font-weight:700}
 .stage h1{font-size:clamp(30px,8.6vw,48px);line-height:1.05;font-weight:800;margin-bottom:26px}
@@ -224,6 +231,8 @@ body::before{
   </symbol>
 </svg>
 
+<p class="credit">Tekinsv tarafından yapıldı</p>
+
 <div id="balloons" aria-hidden="true"></div>
 <canvas id="confetti" aria-hidden="true"></canvas>
 
@@ -351,15 +360,15 @@ body::before{
   <section class="gallery">
     <figure class="polaroid" style="--rot:-5">
       <img src="fotolar/foto1.jpg" alt="Parti şapkalı yavru kedi">
-      <figcaption>parti kedisi 🎉</figcaption>
+      <figcaption>şapkamı taktım, hazırım 🎉</figcaption>
     </figure>
     <figure class="polaroid" style="--rot:4">
       <img src="fotolar/foto2.jpg" alt="Pastanın yanında şapkalı yavru kedi">
-      <figcaption>pasta benim mi? 🎂</figcaption>
+      <figcaption>dilek tutma vakti 🕯️</figcaption>
     </figure>
     <figure class="polaroid" style="--rot:-3">
       <img src="fotolar/foto3.jpg" alt="Balonlar ve pastayla yavru kedi">
-      <figcaption>sana pasta getirdim 🎈</figcaption>
+      <figcaption>pastan da hazır 🎈</figcaption>
     </figure>
   </section>
 
