@@ -1,0 +1,795 @@
+<!doctype html>
+<html lang="tr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#ffe3ea">
+<meta name="color-scheme" content="light">
+<meta name="robots" content="noindex, nofollow">
+<title>Naz'a Bir Mektup 🎈</title>
+<meta property="og:title" content="Naz, sana bir mektup var 🎈">
+<meta property="og:description" content="Zarfa dokun ve aç 🐱">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🐱</text></svg>">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;700;800&family=Caveat:wght@600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg1:#ffe3ea; --bg2:#fff3dc;
+  --ink:#5b3a2e; --ink-soft:#8a6456;
+  --pink:#ff8fab; --pink-d:#e8618a; --pink-l:#ffc9d6;
+  --fur:#f6c99a; --fur-d:#e3a26a; --fur-l:#fde6cb;
+  --paper:#fffaf2; --line:#f4d9cf;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+[hidden]{display:none!important}
+html{-webkit-text-size-adjust:100%}
+body{
+  min-height:100svh;font-family:'Baloo 2',system-ui,sans-serif;color:var(--ink);
+  background:var(--bg1);overflow-x:hidden;-webkit-tap-highlight-color:transparent;
+  -webkit-user-select:none;user-select:none;
+}
+/* fixed background (background-attachment:fixed is broken on iOS) */
+body::before{
+  content:"";position:fixed;inset:0;z-index:-1;
+  background:
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120' viewBox='0 0 120 120'%3E%3Cg fill='%23e8618a' opacity='.07'%3E%3Cellipse cx='30' cy='38' rx='9' ry='7'/%3E%3Ccircle cx='20' cy='27' r='3.4'/%3E%3Ccircle cx='27' cy='22' r='3.4'/%3E%3Ccircle cx='35' cy='22' r='3.4'/%3E%3Ccircle cx='41' cy='28' r='3.4'/%3E%3C/g%3E%3Cg fill='%23e3a26a' opacity='.08' transform='rotate(25 90 90)'%3E%3Cellipse cx='90' cy='96' rx='9' ry='7'/%3E%3Ccircle cx='80' cy='85' r='3.4'/%3E%3Ccircle cx='87' cy='80' r='3.4'/%3E%3Ccircle cx='95' cy='80' r='3.4'/%3E%3Ccircle cx='101' cy='86' r='3.4'/%3E%3C/g%3E%3C/svg%3E"),
+    radial-gradient(circle at 15% 10%,#fff8 0,transparent 45%),
+    radial-gradient(circle at 90% 90%,#ffd9a855 0,transparent 50%),
+    linear-gradient(165deg,var(--bg1),var(--bg2));
+}
+
+/* ---------- layers ---------- */
+#balloons{position:fixed;inset:0;z-index:1;pointer-events:none;overflow:hidden}
+#confetti{position:fixed;inset:0;z-index:50;pointer-events:none;width:100%;height:100%}
+
+.balloon{position:absolute;top:0;pointer-events:auto;touch-action:manipulation;will-change:transform;cursor:pointer}
+.balloon .b-sway{width:100%;height:100%;animation:sway 4s ease-in-out infinite alternate;transform-origin:50% 100%;transition:transform .18s ease-out,opacity .18s}
+.balloon svg{width:100%;height:100%;display:block;overflow:visible}
+.balloon.popped .b-sway{transform:scale(1.5);opacity:0;animation:none}
+@keyframes sway{from{transform:translateX(-10px) rotate(-5deg)}to{transform:translateX(10px) rotate(5deg)}}
+
+/* ---------- music button ---------- */
+.music-btn{
+  position:fixed;z-index:40;top:calc(12px + env(safe-area-inset-top));right:12px;
+  width:48px;height:48px;border-radius:50%;border:0;font-size:22px;cursor:pointer;
+  background:#fffc;box-shadow:0 6px 18px #c0707033;touch-action:manipulation;
+}
+.music-btn.off{opacity:.6}
+.music-btn.off::after{content:"";position:absolute;left:10px;right:10px;top:50%;height:3px;background:var(--pink-d);border-radius:3px;transform:rotate(-40deg)}
+
+/* ---------- stage (envelope) ---------- */
+.stage{
+  position:relative;z-index:2;min-height:100svh;pointer-events:none;
+  display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px;text-align:center;
+  padding:calc(28px + env(safe-area-inset-top)) 16px calc(28px + env(safe-area-inset-bottom));
+}
+.kicker{font-family:'Caveat',cursive;font-size:clamp(22px,6vw,28px);color:var(--pink-d);font-weight:700}
+.stage h1{font-size:clamp(30px,8.6vw,48px);line-height:1.05;font-weight:800;margin-bottom:26px}
+.stage h1 span{color:var(--pink-d)}
+.env-wrap{position:relative;width:min(80vw,380px)}
+.env-btn{
+  pointer-events:auto;display:block;width:100%;background:none;border:0;cursor:pointer;touch-action:manipulation;
+  animation:bob 3.2s ease-in-out infinite;filter:drop-shadow(0 18px 18px rgba(170,90,60,.25));
+  transition:transform .45s cubic-bezier(.5,-.3,.7,.4),opacity .45s;
+}
+.env-btn svg{width:100%;height:auto;display:block;overflow:visible}
+.env-btn:focus-visible{outline:3px dashed var(--pink-d);outline-offset:8px;border-radius:20px}
+.env-btn.opening{animation:none}
+.env-btn.away{transform:scale(.3) translateY(-40px);opacity:0}
+@keyframes bob{0%,100%{transform:translateY(0) rotate(-1.5deg)}50%{transform:translateY(-10px) rotate(1.5deg)}}
+
+.spark{position:absolute;color:#ffb703;font-size:22px;animation:twinkle 2s ease-in-out infinite;pointer-events:none}
+.spark:nth-of-type(1){top:-6%;left:-4%}
+.spark:nth-of-type(2){top:8%;right:-6%;animation-delay:.7s;color:var(--pink)}
+.spark:nth-of-type(3){bottom:4%;left:-8%;animation-delay:1.3s;font-size:16px}
+@keyframes twinkle{0%,100%{transform:scale(.6) rotate(0);opacity:.4}50%{transform:scale(1.15) rotate(20deg);opacity:1}}
+
+.hint{margin-top:30px;font-family:'Caveat',cursive;font-size:clamp(24px,6.4vw,30px);font-weight:700;color:var(--pink-d);animation:pulse 1.5s ease-in-out infinite;transition:opacity .3s}
+.hint.gone{opacity:0}
+@keyframes pulse{0%,100%{transform:scale(1)}50%{transform:scale(1.08)}}
+
+/* envelope parts */
+.env .tail{transform-box:fill-box;transform-origin:0% 100%;animation:wag 1.6s ease-in-out infinite alternate}
+@keyframes wag{from{transform:rotate(-8deg)}to{transform:rotate(12deg)}}
+.env .ear{transform-box:fill-box;transform-origin:50% 100%}
+.env-btn.opening .ear-l{animation:earwig .25s ease-in-out 4 alternate}
+.env-btn.opening .ear-r{animation:earwig .25s ease-in-out 4 alternate-reverse}
+@keyframes earwig{from{transform:rotate(-10deg)}to{transform:rotate(10deg)}}
+.env .eyes{transform-box:fill-box;transform-origin:50% 50%;animation:blink 4.5s infinite}
+@keyframes blink{0%,92%,100%{transform:scaleY(1)}95%{transform:scaleY(.1)}}
+.env .flap-front{transform-box:fill-box;transform-origin:50% 0%;transition:transform .35s ease-in}
+.env .flap-back{transform-box:fill-box;transform-origin:50% 100%;transform:scaleY(0);transition:transform .35s ease-out .33s}
+.env .letter{transition:transform .8s cubic-bezier(.25,1.5,.5,1) .7s}
+.env.open .flap-front{transform:scaleY(0)}
+.env.open .flap-back{transform:scaleY(1)}
+.env.open .letter{transform:translateY(-100px)}
+
+/* ---------- content ---------- */
+.content{
+  position:relative;z-index:2;pointer-events:none;margin:0 auto;max-width:980px;
+  display:flex;flex-direction:column;align-items:center;gap:34px;
+  padding:calc(70px + env(safe-area-inset-top)) 16px calc(56px + env(safe-area-inset-bottom));
+}
+.content > *{pointer-events:auto}
+
+/* note */
+.note{position:relative;width:min(100%,430px);padding-top:100px}
+.note-head{position:absolute;top:0;left:50%;margin-left:-75px;width:150px;height:124px;z-index:0;overflow:visible;animation:peek 3s ease-in-out infinite}
+.note-paws{position:absolute;top:86px;left:50%;margin-left:-75px;width:150px;height:30px;z-index:2}
+@keyframes peek{0%,100%{transform:translateY(0)}50%{transform:translateY(-5px) rotate(2deg)}}
+.paper{
+  position:relative;z-index:1;text-align:center;border-radius:22px;
+  padding:38px 22px 30px;transform:rotate(-1.2deg);
+  background:
+    radial-gradient(circle at 100% 100%,#f7e2d6 0 26px,transparent 27px),
+    repeating-linear-gradient(to bottom,transparent 0 35px,var(--line) 35px 37px),
+    var(--paper);
+  background-position:0 0,0 22px,0 0;
+  box-shadow:0 20px 40px rgba(150,80,60,.2),inset 0 0 0 2px #fff;
+}
+.tape{position:absolute;top:-12px;width:84px;height:26px;border-radius:3px;opacity:.85}
+.tape.l{left:-14px;background:#ffc6d5;transform:rotate(-28deg)}
+.tape.r{right:-14px;background:#bfe3f1;transform:rotate(26deg)}
+.note-title{font-family:'Caveat',cursive;font-weight:700;font-size:clamp(40px,11.5vw,58px);line-height:.98;color:var(--ink)}
+.note-title .name{display:inline-block;position:relative;color:var(--pink-d);font-size:1.45em;margin-top:6px;animation:namebounce 2.4s ease-in-out infinite}
+.note-title .name svg{position:absolute;left:-6%;bottom:-6px;width:112%;height:16px;overflow:visible}
+@keyframes namebounce{0%,100%{transform:rotate(-3deg)}50%{transform:rotate(3deg) scale(1.05)}}
+.note-msg{font-family:'Caveat',cursive;font-weight:600;font-size:clamp(23px,6vw,27px);line-height:1.25;margin-top:22px;color:var(--ink-soft)}
+.note-foot{display:flex;align-items:flex-end;justify-content:space-between;margin-top:14px}
+.pawtrail{display:flex;gap:6px;align-items:flex-end}
+.pawtrail svg{width:20px;height:20px;fill:var(--pink)}
+.pawtrail svg:nth-child(odd){transform:translateY(-6px) rotate(-15deg)}
+.pawtrail svg:nth-child(even){transform:rotate(15deg)}
+.sleepy{width:84px;height:56px;overflow:visible}
+.sleepy .z{font-family:'Caveat',cursive;font-weight:700;fill:var(--ink-soft);animation:zz 2.4s ease-in-out infinite}
+.sleepy .z2{animation-delay:.8s}
+@keyframes zz{0%{opacity:0;transform:translate(0,0)}40%{opacity:1}100%{opacity:0;transform:translate(6px,-10px)}}
+
+/* gallery */
+.sec-title{font-family:'Caveat',cursive;font-weight:700;font-size:clamp(30px,8vw,38px);text-align:center;line-height:1;pointer-events:none!important}
+.gallery{display:flex;flex-direction:column;align-items:center;width:100%;pointer-events:none!important;margin-top:-14px}
+.polaroid{
+  pointer-events:auto;position:relative;width:min(78vw,300px);background:#fff;border-radius:6px;
+  padding:12px 12px 0;box-shadow:0 16px 32px rgba(120,60,40,.2);cursor:zoom-in;touch-action:manipulation;
+  transform:rotate(calc(var(--rot) * 1deg));
+}
+.polaroid:nth-child(1){margin-right:12%}
+.polaroid:nth-child(2){margin-left:14%;margin-top:-4px}
+.polaroid:nth-child(3){margin-right:8%;margin-top:-4px}
+.polaroid::before{content:"";position:absolute;top:-13px;left:50%;width:86px;height:26px;margin-left:-43px;border-radius:3px;background:#ffc6d5d9;transform:rotate(-5deg)}
+.polaroid:nth-child(2)::before{background:#fde29ad9;transform:rotate(4deg)}
+.polaroid:nth-child(3)::before{background:#bfe3f1d9;transform:rotate(-2deg)}
+.polaroid img,.polaroid .ph{display:block;width:100%;border-radius:3px;background:#f6ede8}
+.polaroid img{height:auto;-webkit-user-drag:none}
+.polaroid figcaption{font-family:'Caveat',cursive;font-weight:700;font-size:25px;text-align:center;padding:8px 4px 12px;color:var(--ink)}
+.polaroid .ph{aspect-ratio:4/5;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;font-size:60px;
+  background:repeating-linear-gradient(45deg,#fff1f4 0 12px,#ffe5ed 12px 24px)}
+.polaroid .ph small{font-size:15px;color:var(--ink-soft);font-weight:700}
+.polaroid.missing{cursor:default}
+@media (min-width:760px){
+  .gallery{flex-direction:row;justify-content:center;align-items:flex-start;gap:22px}
+  .polaroid{width:270px;margin:0!important}
+  .polaroid:nth-child(2){margin-top:46px!important}
+}
+
+/* cake */
+.cake-wrap{text-align:center;display:flex;flex-direction:column;align-items:center;gap:6px}
+.cake-hint{font-family:'Caveat',cursive;font-weight:700;font-size:clamp(25px,6.6vw,30px);color:var(--pink-d)}
+.cake{background:none;border:0;cursor:pointer;width:min(72vw,280px);touch-action:manipulation;filter:drop-shadow(0 14px 14px rgba(150,80,60,.2))}
+.cake svg{width:100%;height:auto;display:block;overflow:visible}
+.cake .flame{transform-box:fill-box;transform-origin:50% 100%;animation:flicker .5s ease-in-out infinite alternate;transition:transform .25s,opacity .25s}
+.cake .flame:nth-of-type(2){animation-delay:.15s}
+.cake .glow{animation:glow 1s ease-in-out infinite alternate;transition:opacity .3s}
+@keyframes flicker{from{transform:scale(1,1) rotate(-3deg)}to{transform:scale(.92,1.1) rotate(3deg)}}
+@keyframes glow{from{opacity:.25}to{opacity:.45}}
+.cake.blown .flame{animation:none;transform:scale(0);opacity:0}
+.cake.blown .glow{animation:none;opacity:0}
+.cake .smoke circle{opacity:0}
+.cake.blown .smoke circle{animation:smoke 1.6s ease-out forwards}
+.cake.blown .smoke circle:nth-child(2){animation-delay:.2s}
+.cake.blown .smoke circle:nth-child(3){animation-delay:.4s}
+@keyframes smoke{0%{opacity:.7;transform:translate(0,0) scale(.6)}100%{opacity:0;transform:translate(8px,-46px) scale(2)}}
+.cake .cake-eyes{transform-box:fill-box;transform-origin:50% 50%;animation:blink 3.7s infinite}
+.wish{font-family:'Caveat',cursive;font-weight:700;font-size:clamp(28px,7.6vw,36px);color:var(--ink);opacity:0;transform:scale(.6);transition:opacity .4s,transform .5s cubic-bezier(.2,1.6,.4,1);min-height:1.2em}
+.wish.show{opacity:1;transform:scale(1)}
+
+.replay{
+  font-family:inherit;font-weight:700;font-size:18px;color:#fff;border:0;border-radius:999px;cursor:pointer;
+  padding:12px 24px;background:var(--pink-d);box-shadow:0 10px 22px #e8618a55;touch-action:manipulation;
+}
+
+/* lightbox */
+.lightbox{position:fixed;inset:0;z-index:60;background:#3b2a25cc;display:flex;align-items:center;justify-content:center;padding:20px;cursor:zoom-out;animation:fade .25s}
+.lightbox figure{background:#fff;padding:12px 12px 0;border-radius:8px;max-width:100%;animation:zoomin .35s cubic-bezier(.2,1.3,.4,1)}
+.lightbox img{display:block;max-width:calc(100vw - 64px);max-height:calc(100svh - 150px);border-radius:3px}
+.lightbox figcaption{font-family:'Caveat',cursive;font-weight:700;font-size:28px;text-align:center;padding:8px 0 12px}
+@keyframes fade{from{opacity:0}}
+@keyframes zoomin{from{transform:scale(.6) rotate(-6deg);opacity:0}}
+
+@media (prefers-reduced-motion:reduce){
+  .env-btn,.note-head,.hint,.note-title .name{animation:none}
+}
+</style>
+</head>
+<body>
+
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <symbol id="paw" viewBox="0 0 40 40">
+    <ellipse cx="20" cy="27" rx="10" ry="8.5"/>
+    <ellipse cx="8" cy="15" rx="4" ry="5"/>
+    <ellipse cx="15.5" cy="8.5" rx="4" ry="5"/>
+    <ellipse cx="24.5" cy="8.5" rx="4" ry="5"/>
+    <ellipse cx="32" cy="15" rx="4" ry="5"/>
+  </symbol>
+</svg>
+
+<div id="balloons" aria-hidden="true"></div>
+<canvas id="confetti" aria-hidden="true"></canvas>
+
+<button class="music-btn" id="musicBtn" hidden aria-label="Müziği aç/kapat">🎵</button>
+
+<!-- ================= ENVELOPE ================= -->
+<section class="stage" id="stage">
+  <p class="kicker">psst… bir mektubun var</p>
+  <h1>Bu zarf sadece<br><span>Naz</span> için 🎁</h1>
+
+  <div class="env-wrap">
+    <span class="spark">✦</span><span class="spark">✦</span><span class="spark">✦</span>
+    <button class="env-btn" id="envBtn" aria-label="Zarfı aç">
+      <svg class="env" id="envSvg" viewBox="0 0 300 270" aria-hidden="true">
+        <!-- tail -->
+        <path class="tail" d="M272 215 C 318 205, 322 150, 292 128 C 280 120, 270 132, 282 140" fill="none" stroke="var(--fur-d)" stroke-width="15" stroke-linecap="round"/>
+        <!-- ears -->
+        <g class="ear ear-l">
+          <path d="M26 100 L48 14 Q52 8 58 13 L124 74 Z" fill="var(--fur)" stroke="var(--fur-d)" stroke-width="3" stroke-linejoin="round"/>
+          <path d="M44 88 L55 36 L98 74 Z" fill="#ffb3c6"/>
+        </g>
+        <g class="ear ear-r">
+          <path d="M274 100 L252 14 Q248 8 242 13 L176 74 Z" fill="var(--fur)" stroke="var(--fur-d)" stroke-width="3" stroke-linejoin="round"/>
+          <path d="M256 88 L245 36 L202 74 Z" fill="#ffb3c6"/>
+        </g>
+        <!-- inside back -->
+        <rect x="18" y="70" width="264" height="172" rx="20" fill="#d88f55"/>
+        <!-- open flap (back side) -->
+        <path class="flap-back" d="M18 72 Q18 70 22 68 L142 -18 Q150 -23 158 -18 L278 68 Q282 70 282 72 Z" fill="#eeb07a" stroke="var(--fur-d)" stroke-width="3" stroke-linejoin="round"/>
+        <!-- letter -->
+        <g class="letter">
+          <rect x="52" y="86" width="196" height="140" rx="10" fill="#fffaf2" stroke="#f1d8cc" stroke-width="2"/>
+          <path d="M72 118 H228 M72 140 H228 M72 162 H200" stroke="#f4d9cf" stroke-width="3" stroke-linecap="round"/>
+          <path d="M150 84 l4.5 9 10 1.2 -7.5 6.8 2 9.8 -9 -5 -9 5 2 -9.8 -7.5 -6.8 10 -1.2z" fill="#ffb703"/>
+        </g>
+        <!-- front pocket -->
+        <path d="M18 74 L150 192 L282 74 V222 Q282 242 262 242 H38 Q18 242 18 222 Z" fill="var(--fur)" stroke="var(--fur-d)" stroke-width="3" stroke-linejoin="round"/>
+        <path d="M30 150 q14 6 26 2 M28 172 q16 6 30 1 M270 150 q-14 6 -26 2 M272 172 q-16 6 -30 1" stroke="var(--fur-d)" stroke-width="4" fill="none" stroke-linecap="round" opacity=".7"/>
+        <!-- chest fluff -->
+        <path d="M122 242 q6 -18 14 -8 q6 -16 14 -4 q8 -12 14 4 q8 -10 14 8 Z" fill="var(--fur-l)"/>
+        <!-- paws -->
+        <g stroke="var(--fur-d)" stroke-width="3" fill="var(--fur-l)">
+          <ellipse cx="96" cy="244" rx="28" ry="16"/>
+          <ellipse cx="204" cy="244" rx="28" ry="16"/>
+        </g>
+        <path d="M88 250 v-8 M98 251 v-9 M108 249 v-8 M196 249 v-8 M206 251 v-9 M216 250 v-8" stroke="var(--fur-d)" stroke-width="2.5" stroke-linecap="round"/>
+        <!-- closed flap = cat face -->
+        <g class="flap-front">
+          <path d="M18 72 Q18 70 22 70 H278 Q282 70 282 72 L158 178 Q150 185 142 178 Z" fill="#f9d2a8" stroke="var(--fur-d)" stroke-width="3" stroke-linejoin="round"/>
+          <path d="M150 80 v16 M136 80 l3 13 M164 80 l-3 13" stroke="var(--fur-d)" stroke-width="4" stroke-linecap="round"/>
+          <g class="eyes">
+            <ellipse cx="114" cy="114" rx="11" ry="13" fill="#3b2a25"/>
+            <ellipse cx="186" cy="114" rx="11" ry="13" fill="#3b2a25"/>
+            <circle cx="118" cy="109" r="4" fill="#fff"/><circle cx="190" cy="109" r="4" fill="#fff"/>
+            <circle cx="110" cy="119" r="1.8" fill="#fff"/><circle cx="182" cy="119" r="1.8" fill="#fff"/>
+          </g>
+          <ellipse cx="108" cy="136" rx="10" ry="6" fill="#ff9eb5" opacity=".6"/>
+          <ellipse cx="192" cy="136" rx="10" ry="6" fill="#ff9eb5" opacity=".6"/>
+          <path d="M139 150 h22 q3 0 1 3 l-10 9 q-2 2 -4 0 l-10 -9 q-2 -3 1 -3z" fill="var(--pink-d)"/>
+          <path d="M141 170 q4.5 5 9 0 q4.5 5 9 0" stroke="#3b2a25" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+          <path d="M118 146 L66 138 M118 153 L68 158 M182 146 L234 138 M182 153 L232 158" stroke="#8a6456" stroke-width="2" stroke-linecap="round"/>
+        </g>
+      </svg>
+    </button>
+  </div>
+  <p class="hint" id="hint">zarfa dokun ✨</p>
+</section>
+
+<!-- ================= INSIDE ================= -->
+<main class="content" id="content" hidden>
+
+  <section class="note reveal-note">
+    <svg class="note-head" viewBox="0 0 150 124" aria-hidden="true">
+      <path d="M28 64 L30 14 Q31 9 36 12 L72 42 Z" fill="var(--fur)" stroke="var(--fur-d)" stroke-width="3" stroke-linejoin="round"/>
+      <path d="M122 64 L120 14 Q119 9 114 12 L78 42 Z" fill="var(--fur)" stroke="var(--fur-d)" stroke-width="3" stroke-linejoin="round"/>
+      <path d="M36 52 L38 26 L58 44Z M114 52 L112 26 L92 44Z" fill="#ffb3c6"/>
+      <ellipse cx="75" cy="80" rx="54" ry="44" fill="var(--fur)" stroke="var(--fur-d)" stroke-width="3"/>
+      <path d="M75 38 v12 M65 39 l2 10 M85 39 l-2 10" stroke="var(--fur-d)" stroke-width="3.5" stroke-linecap="round"/>
+      <!-- party hat -->
+      <g transform="rotate(12 75 30)">
+        <path d="M58 40 L75 -8 L92 40 Q75 46 58 40Z" fill="#ff8fab"/>
+        <path d="M63 26 L87 26 M68 12 L82 12" stroke="#fff" stroke-width="4" opacity=".8"/>
+        <circle cx="66" cy="34" r="2.5" fill="#ffe08a"/><circle cx="80" cy="18" r="2.5" fill="#8ecae6"/>
+        <circle cx="75" cy="-9" r="7" fill="#8ecae6"/>
+      </g>
+      <path d="M46 72 q8 -9 16 0 M88 72 q8 -9 16 0" stroke="#3b2a25" stroke-width="3.5" fill="none" stroke-linecap="round"/>
+      <ellipse cx="42" cy="86" rx="8" ry="5" fill="#ff9eb5" opacity=".6"/>
+      <ellipse cx="108" cy="86" rx="8" ry="5" fill="#ff9eb5" opacity=".6"/>
+      <path d="M70 83 h10 l-5 6z" fill="var(--pink-d)"/>
+      <path d="M66 93 q4.5 5 9 0 q4.5 5 9 0" stroke="#3b2a25" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+    </svg>
+    <svg class="note-paws" viewBox="0 0 150 30" aria-hidden="true">
+      <g fill="var(--fur-l)" stroke="var(--fur-d)" stroke-width="2.5">
+        <ellipse cx="44" cy="15" rx="19" ry="11"/>
+        <ellipse cx="106" cy="15" rx="19" ry="11"/>
+      </g>
+      <path d="M38 20 v-6 M45 21 v-7 M52 20 v-6 M100 20 v-6 M107 21 v-7 M114 20 v-6" stroke="var(--fur-d)" stroke-width="2" stroke-linecap="round"/>
+    </svg>
+
+    <div class="paper">
+      <span class="tape l"></span><span class="tape r"></span>
+      <h2 class="note-title">Doğum Günün<br>Kutlu Olsun<br>
+        <span class="name">Naz!
+          <svg viewBox="0 0 100 16" preserveAspectRatio="none" aria-hidden="true"><path d="M2 10 Q14 2 26 9 T50 9 T74 9 T98 8" stroke="#ffb703" stroke-width="4" fill="none" stroke-linecap="round"/></svg>
+        </span>
+      </h2>
+      <p class="note-msg">Yeni yaşın mırıl mırıl huzur,<br>bol kahkaha ve kocaman<br>mutlulukla dolsun 🐾</p>
+      <div class="note-foot">
+        <div class="pawtrail" aria-hidden="true">
+          <svg><use href="#paw"/></svg><svg><use href="#paw"/></svg><svg><use href="#paw"/></svg>
+        </div>
+        <svg class="sleepy" viewBox="0 0 84 56" aria-hidden="true">
+          <path d="M10 50 C4 32 22 20 42 22 C62 24 76 34 72 50 Z" fill="var(--fur-l)" stroke="var(--ink)" stroke-width="2.2" stroke-linejoin="round"/>
+          <path d="M16 36 L14 24 L24 30 M34 23 L38 12 L44 22" fill="var(--fur-l)" stroke="var(--ink)" stroke-width="2.2" stroke-linejoin="round" stroke-linecap="round"/>
+          <path d="M20 38 q4 3 8 0 M34 36 q4 3 8 0" stroke="var(--ink)" stroke-width="2" fill="none" stroke-linecap="round"/>
+          <path d="M72 48 C84 46 84 34 74 34" stroke="var(--ink)" stroke-width="2.2" fill="none" stroke-linecap="round"/>
+          <text class="z" x="50" y="14" font-size="14">z</text>
+          <text class="z z2" x="60" y="8" font-size="11">z</text>
+        </svg>
+      </div>
+    </div>
+  </section>
+
+  <h2 class="sec-title reveal">Zarftan çıkanlar 📸</h2>
+  <section class="gallery">
+    <figure class="polaroid" style="--rot:-5">
+      <img src="fotolar/foto1.jpg" alt="Parti şapkalı yavru kedi">
+      <figcaption>parti kedisi 🎉</figcaption>
+    </figure>
+    <figure class="polaroid" style="--rot:4">
+      <img src="fotolar/foto2.jpg" alt="Pastanın yanında şapkalı yavru kedi">
+      <figcaption>pasta benim mi? 🎂</figcaption>
+    </figure>
+    <figure class="polaroid" style="--rot:-3">
+      <img src="fotolar/foto3.jpg" alt="Balonlar ve pastayla yavru kedi">
+      <figcaption>sana pasta getirdim 🎈</figcaption>
+    </figure>
+  </section>
+
+  <section class="cake-wrap reveal">
+    <p class="cake-hint" id="cakeHint">Bir dilek tut, mumlara dokun 🕯️</p>
+    <button class="cake" id="cake" aria-label="Mumları üfle">
+      <svg viewBox="0 0 240 230" aria-hidden="true">
+        <ellipse cx="120" cy="212" rx="110" ry="14" fill="#fff" stroke="#f0d9d0" stroke-width="3"/>
+        <!-- bottom tier -->
+        <rect x="26" y="128" width="188" height="82" rx="14" fill="#ffb3c6"/>
+        <path d="M26 146 V140 Q26 128 40 128 H200 Q214 128 214 140 V150 Q204 166 192 150 Q180 170 168 150 Q156 162 144 150 Q132 172 120 150 Q108 162 96 150 Q84 170 72 150 Q60 162 48 150 Q37 166 26 150 Z" fill="#fff5f8"/>
+        <g fill="#fff"><circle cx="50" cy="188" r="5"/><circle cx="85" cy="192" r="5"/><circle cx="120" cy="188" r="5"/><circle cx="155" cy="192" r="5"/><circle cx="190" cy="188" r="5"/></g>
+        <!-- cat top tier -->
+        <path d="M62 86 L68 50 Q70 46 74 49 L100 80 Z M178 86 L172 50 Q170 46 166 49 L140 80 Z" fill="#ffe2b3" stroke="var(--fur-d)" stroke-width="2.5" stroke-linejoin="round"/>
+        <path d="M68 78 L71 58 L88 78 Z M172 78 L169 58 L152 78 Z" fill="#ffb3c6"/>
+        <rect x="56" y="76" width="128" height="58" rx="14" fill="#ffe2b3" stroke="var(--fur-d)" stroke-width="2.5"/>
+        <g class="cake-eyes"><circle cx="98" cy="102" r="5" fill="#3b2a25"/><circle cx="142" cy="102" r="5" fill="#3b2a25"/></g>
+        <ellipse cx="86" cy="114" rx="7" ry="4" fill="#ff9eb5" opacity=".6"/><ellipse cx="154" cy="114" rx="7" ry="4" fill="#ff9eb5" opacity=".6"/>
+        <path d="M115 108 h10 l-5 5z" fill="var(--pink-d)"/>
+        <path d="M111 117 q4.5 5 9 0 q4.5 5 9 0" stroke="#3b2a25" stroke-width="2.2" fill="none" stroke-linecap="round"/>
+        <path d="M96 110 L70 107 M96 115 L72 119 M144 110 L170 107 M144 115 L168 119" stroke="#b08878" stroke-width="1.6" stroke-linecap="round"/>
+        <!-- candles -->
+        <g stroke="#fff" stroke-width="2" opacity=".9">
+          <rect x="100" y="40" width="9" height="38" rx="2" fill="#8ecae6"/>
+          <rect x="116" y="34" width="9" height="44" rx="2" fill="#ff8fab"/>
+          <rect x="132" y="40" width="9" height="38" rx="2" fill="#cdb4ff"/>
+        </g>
+        <path d="M104.5 40 v-6 M120.5 34 v-6 M136.5 40 v-6" stroke="#5b3a2e" stroke-width="2" stroke-linecap="round"/>
+        <circle class="glow" cx="120" cy="22" r="30" fill="#ffd166"/>
+        <g class="flame"><path d="M104.5 12 C112 22 111 34 104.5 34 C98 34 97 22 104.5 12Z" fill="#ffb703"/><ellipse cx="104.5" cy="29" rx="2.6" ry="4" fill="#fff3b0"/></g>
+        <g class="flame"><path d="M120.5 6 C128 16 127 28 120.5 28 C114 28 113 16 120.5 6Z" fill="#ffb703"/><ellipse cx="120.5" cy="23" rx="2.6" ry="4" fill="#fff3b0"/></g>
+        <g class="flame"><path d="M136.5 12 C144 22 143 34 136.5 34 C130 34 129 22 136.5 12Z" fill="#ffb703"/><ellipse cx="136.5" cy="29" rx="2.6" ry="4" fill="#fff3b0"/></g>
+        <g class="smoke" fill="#cfc4bf"><circle cx="104.5" cy="30" r="4"/><circle cx="120.5" cy="24" r="4"/><circle cx="136.5" cy="30" r="4"/></g>
+      </svg>
+    </button>
+    <p class="wish" id="wish">Dileğin gerçek olsun! ✨</p>
+  </section>
+
+  <button class="replay reveal" id="replay">✉️ Zarfı tekrar kapat</button>
+</main>
+
+<div class="lightbox" id="lightbox" hidden>
+  <figure><img id="lbImg" alt=""><figcaption id="lbCap"></figcaption></figure>
+</div>
+
+<script>
+(() => {
+  const $ = s => document.querySelector(s);
+  const rand = (a, b) => a + Math.random() * (b - a);
+
+  /* ================= SOUND ================= */
+  const Sound = (() => {
+    let ctx, master, musicGain = null, loopTimer = null, musicOn = true;
+    const midi = n => 440 * Math.pow(2, (n - 69) / 12);
+
+    function init() {
+      if (ctx) { if (ctx.state === 'suspended') ctx.resume(); return; }
+      const AC = window.AudioContext || window.webkitAudioContext;
+      if (!AC) return;
+      ctx = new AC();
+      master = ctx.createGain();
+      master.gain.value = 0.9;
+      master.connect(ctx.destination);
+    }
+
+    // soft music-box voice
+    function note(freq, t, dur, vol, dest) {
+      const o = ctx.createOscillator(), o2 = ctx.createOscillator();
+      const g = ctx.createGain(), g2 = ctx.createGain();
+      o.type = 'sine'; o2.type = 'triangle';
+      o.frequency.value = freq; o2.frequency.value = freq * 2;
+      g2.gain.value = 0.18;
+      o.connect(g); o2.connect(g2); g2.connect(g); g.connect(dest || master);
+      g.gain.setValueAtTime(0.0001, t);
+      g.gain.exponentialRampToValueAtTime(vol, t + 0.015);
+      g.gain.exponentialRampToValueAtTime(0.0001, t + dur + 0.6);
+      o.start(t); o2.start(t);
+      o.stop(t + dur + 0.65); o2.stop(t + dur + 0.65);
+    }
+
+    function noise(dur, filterType, freq, vol, t) {
+      const len = Math.floor(ctx.sampleRate * dur);
+      const buf = ctx.createBuffer(1, len, ctx.sampleRate);
+      const d = buf.getChannelData(0);
+      for (let i = 0; i < len; i++) d[i] = Math.random() * 2 - 1;
+      const src = ctx.createBufferSource(); src.buffer = buf;
+      const f = ctx.createBiquadFilter(); f.type = filterType; f.frequency.value = freq;
+      const g = ctx.createGain();
+      g.gain.setValueAtTime(vol, t);
+      g.gain.exponentialRampToValueAtTime(0.0001, t + dur);
+      src.connect(f); f.connect(g); g.connect(master);
+      src.start(t);
+      return f;
+    }
+
+    function chime() {
+      if (!ctx) return;
+      const t = ctx.currentTime;
+      [72, 76, 79, 84, 88].forEach((n, i) => note(midi(n), t + i * 0.09, 0.3, 0.14));
+    }
+    function pop() {
+      if (!ctx) return;
+      const t = ctx.currentTime;
+      noise(0.12, 'bandpass', rand(900, 1800), 0.9, t);
+      note(midi(84 + (Math.random() * 7 | 0)), t + 0.02, 0.05, 0.05);
+    }
+    function blow() {
+      if (!ctx) return;
+      const t = ctx.currentTime;
+      const f = noise(0.55, 'lowpass', 1400, 0.35, t);
+      f.frequency.exponentialRampToValueAtTime(300, t + 0.5);
+    }
+    function yay() {
+      if (!ctx) return;
+      const t = ctx.currentTime;
+      [[67, 0], [72, .1], [76, .2], [79, .3], [84, .45], [79, .6], [84, .72]].forEach(([n, d]) => note(midi(n), t + d, 0.25, 0.15));
+    }
+
+    // "Happy Birthday" melody (public domain)
+    const MELODY = [
+      [67,.75],[67,.25],[69,1],[67,1],[72,1],[71,2],
+      [67,.75],[67,.25],[69,1],[67,1],[74,1],[72,2],
+      [67,.75],[67,.25],[79,1],[76,1],[72,1],[71,1],[69,2],
+      [77,.75],[77,.25],[76,1],[72,1],[74,1],[72,3]
+    ];
+    const BEAT = 0.4;
+
+    function playLoop() {
+      if (!ctx || !musicOn || !musicGain) return;
+      let t = ctx.currentTime + 0.1;
+      MELODY.forEach(([n, d]) => { note(midi(n), t, d * BEAT * 0.9, 0.13, musicGain); t += d * BEAT; });
+      const total = MELODY.reduce((s, [, d]) => s + d, 0) * BEAT;
+      loopTimer = setTimeout(playLoop, (total + 2.5) * 1000);
+    }
+    function startMusic() {
+      if (!ctx || musicGain) return;
+      musicGain = ctx.createGain();
+      musicGain.gain.value = 0.8;
+      musicGain.connect(master);
+      playLoop();
+    }
+    function stopMusic() {
+      clearTimeout(loopTimer);
+      if (!musicGain) return;
+      const g = musicGain; musicGain = null;
+      g.gain.setTargetAtTime(0, ctx.currentTime, 0.05);
+      setTimeout(() => g.disconnect(), 400);
+    }
+    function toggleMusic() {
+      musicOn = !musicOn;
+      musicOn ? startMusic() : stopMusic();
+      return musicOn;
+    }
+
+    document.addEventListener('visibilitychange', () => {
+      if (!ctx) return;
+      document.hidden ? ctx.suspend() : ctx.resume();
+    });
+
+    return { init, chime, pop, blow, yay, startMusic, stopMusic, toggleMusic, get musicOn() { return musicOn; } };
+  })();
+
+  /* ================= CONFETTI ================= */
+  const Confetti = (() => {
+    const cv = $('#confetti'), cx = cv.getContext('2d');
+    const COLORS = ['#ff8fab', '#ffb703', '#8ecae6', '#7fd8a4', '#cdb4ff', '#ff6b6b', '#f6a96c'];
+    let W, H, parts = [], running = false;
+
+    function resize() {
+      const dpr = Math.min(window.devicePixelRatio || 1, 2);
+      W = innerWidth; H = innerHeight;
+      cv.width = W * dpr; cv.height = H * dpr;
+      cx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    }
+    resize();
+    addEventListener('resize', resize);
+
+    function make(x, y, vx, vy, palette) {
+      const r = Math.random();
+      return { x, y, vx, vy, w: rand(6, 11), h: rand(4, 7), rot: rand(0, 6), vr: rand(-.25, .25),
+        c: palette[Math.random() * palette.length | 0], life: 0, max: rand(100, 170),
+        shape: r < .22 ? 'star' : r < .55 ? 'dot' : 'rect' };
+    }
+    function kick() { if (!running) { running = true; requestAnimationFrame(tick); } }
+
+    function burst(x, y, n = 90, palette = COLORS) {
+      for (let i = 0; i < n && parts.length < 700; i++) {
+        const a = rand(0, Math.PI * 2), s = rand(2, 10);
+        parts.push(make(x, y, Math.cos(a) * s, Math.sin(a) * s - 4, palette));
+      }
+      kick();
+    }
+    function rain(n = 100) {
+      for (let i = 0; i < n && parts.length < 700; i++) {
+        const p = make(rand(0, W), rand(-H * .4, -10), rand(-1, 1), rand(1, 4), COLORS);
+        p.max = 260; parts.push(p);
+      }
+      kick();
+    }
+
+    function tick() {
+      cx.clearRect(0, 0, W, H);
+      parts = parts.filter(p => p.life < p.max && p.y < H + 40);
+      for (const p of parts) {
+        p.life++;
+        p.vx *= .985; p.vy = p.vy * .985 + .2;
+        p.x += p.vx + Math.sin((p.life + p.w * 10) / 12) * .4; p.y += p.vy; p.rot += p.vr;
+        cx.save();
+        cx.globalAlpha = Math.min(1, (p.max - p.life) / 25);
+        cx.translate(p.x, p.y); cx.rotate(p.rot); cx.fillStyle = p.c;
+        if (p.shape === 'rect') cx.fillRect(-p.w / 2, -p.h / 2, p.w, p.h * Math.abs(Math.cos(p.life / 8)) + 1);
+        else if (p.shape === 'dot') { cx.beginPath(); cx.arc(0, 0, p.h / 1.5, 0, 7); cx.fill(); }
+        else {
+          const s = p.w / 9; cx.scale(s, s);
+          cx.beginPath();
+          for (let k = 0; k < 10; k++) {
+            const rr = k % 2 ? 2.2 : 5.5, a = k * Math.PI / 5 - Math.PI / 2;
+            cx.lineTo(Math.cos(a) * rr, Math.sin(a) * rr);
+          }
+          cx.closePath(); cx.fill();
+        }
+        cx.restore();
+      }
+      if (parts.length) requestAnimationFrame(tick);
+      else { running = false; cx.clearRect(0, 0, W, H); }
+    }
+    return { burst, rain };
+  })();
+
+  /* ================= BALLOONS ================= */
+  const Balloons = (() => {
+    const layer = $('#balloons');
+    const COLORS = ['#ff8fab', '#ffb703', '#8ecae6', '#7fd8a4', '#cdb4ff', '#ff6b6b', '#ffa45b', '#f78fd6'];
+    const MAX = 22;
+    let count = 0, timer = null;
+
+    function spawn(opts = {}) {
+      if (count >= MAX) return;
+      count++;
+      const size = rand(46, 78);
+      const c = COLORS[Math.random() * COLORS.length | 0];
+      const catEars = Math.random() < .4;
+      const el = document.createElement('div');
+      el.className = 'balloon';
+      el.style.width = size + 'px';
+      el.style.height = size * 2.07 + 'px';
+      el.style.left = rand(-10, innerWidth - size + 10) + 'px';
+      el.innerHTML =
+        `<div class="b-sway" style="animation-duration:${rand(2.8, 4.8).toFixed(2)}s;animation-delay:-${rand(0, 3).toFixed(2)}s">
+          <svg viewBox="0 -4 60 124">
+            ${catEars ? `<path d="M8 20 L8 -2 L26 8Z M52 20 L52 -2 L34 8Z" fill="${c}"/>` : ''}
+            <path d="M30 2 C48 2 58 18 58 36 C58 58 42 74 30 76 C18 74 2 58 2 36 C2 18 12 2 30 2Z" fill="${c}"/>
+            <ellipse cx="19" cy="24" rx="6" ry="11" fill="#fff" opacity=".42" transform="rotate(-25 19 24)"/>
+            ${catEars ? `<path d="M22 44 q4 -4 8 0 M34 44 q4 -4 8 0" stroke="#0005" stroke-width="2" fill="none" stroke-linecap="round"/><path d="M27 52 q3 3 6 0" stroke="#0005" stroke-width="1.6" fill="none" stroke-linecap="round"/>` : ''}
+            <path d="M25.5 81 L30 75 L34.5 81Z" fill="${c}"/>
+            <path d="M30 81 q-7 10 0 20 q7 10 0 20" stroke="#a8958b" stroke-width="1.3" fill="none"/>
+          </svg>
+        </div>`;
+      layer.appendChild(el);
+
+      const H = innerHeight, h = size * 2.07;
+      const dur = (opts.fast ? rand(5500, 8500) : rand(10000, 16000));
+      const anim = el.animate(
+        [{ transform: `translateY(${H + 10}px)` }, { transform: `translateY(${-h - 20}px)` }],
+        { duration: dur, easing: 'linear' }
+      );
+      if (opts.progress) anim.currentTime = dur * opts.progress;
+      const done = () => { el.remove(); count--; };
+      anim.onfinish = done;
+
+      el.addEventListener('pointerdown', e => {
+        e.preventDefault();
+        if (el.classList.contains('popped')) return;
+        Sound.init(); Sound.pop();
+        anim.pause(); anim.onfinish = null;
+        const r = el.getBoundingClientRect();
+        Confetti.burst(r.left + r.width / 2, r.top + r.width * .6, 28, [c, '#fff8', c]);
+        el.classList.add('popped');
+        if (navigator.vibrate) navigator.vibrate(15);
+        setTimeout(done, 220);
+      });
+    }
+
+    function every(ms, fast) {
+      clearInterval(timer);
+      timer = setInterval(() => spawn({ fast }), ms);
+    }
+    function burst(n) {
+      for (let i = 0; i < n; i++) setTimeout(() => spawn({ fast: true }), i * 120);
+    }
+    return { spawn, every, burst };
+  })();
+
+  // a few balloons already floating on load
+  for (let i = 0; i < 5; i++) Balloons.spawn({ progress: rand(.1, .8) });
+  Balloons.every(2400, false);
+
+  /* ================= OPEN ENVELOPE ================= */
+  const stage = $('#stage'), envBtn = $('#envBtn'), envSvg = $('#envSvg');
+  const content = $('#content'), musicBtn = $('#musicBtn');
+  let opened = false;
+
+  envBtn.addEventListener('click', () => {
+    if (opened) return;
+    opened = true;
+    Sound.init(); Sound.chime();
+    if (navigator.vibrate) navigator.vibrate([20, 40, 20]);
+    envBtn.classList.add('opening');
+    envSvg.classList.add('open');
+    $('#hint').classList.add('gone');
+
+    setTimeout(() => {
+      const r = envBtn.getBoundingClientRect();
+      Confetti.burst(r.left + r.width / 2, r.top + r.height * .3, 140);
+      Balloons.burst(10);
+    }, 1300);
+    setTimeout(() => envBtn.classList.add('away'), 1600);
+    setTimeout(showContent, 2050);
+  });
+
+  function showContent() {
+    stage.hidden = true;
+    content.hidden = false;
+    musicBtn.hidden = false;
+    window.scrollTo(0, 0);
+    Balloons.every(1300, false);
+
+    const vw = innerWidth, vh = innerHeight;
+    $('.reveal-note').animate(
+      [{ transform: 'translateY(60px) scale(.5) rotate(-8deg)', opacity: 0 }, { transform: 'none', opacity: 1 }],
+      { duration: 750, easing: 'cubic-bezier(.2,1.3,.4,1)', fill: 'backwards' }
+    );
+
+    // photos fly out from where the envelope was
+    document.querySelectorAll('.polaroid').forEach((p, i) => {
+      const b = p.getBoundingClientRect();
+      const dx = vw / 2 - (b.left + b.width / 2);
+      const dy = vh * .5 - (b.top + b.height / 2);
+      const rot = parseFloat(p.style.getPropertyValue('--rot')) || 0;
+      p.animate([
+        { transform: `translate(${dx}px,${dy}px) scale(.12) rotate(${rot * 8}deg)`, opacity: 0 },
+        { opacity: 1, offset: .2 },
+        { transform: `translate(0,0) scale(1) rotate(${rot}deg)`, opacity: 1 }
+      ], { duration: 1100, delay: 450 + i * 260, easing: 'cubic-bezier(.2,.9,.25,1.12)', fill: 'backwards' });
+    });
+
+    document.querySelectorAll('.reveal').forEach((el, i) => {
+      el.animate([{ transform: 'translateY(30px)', opacity: 0 }, { transform: 'none', opacity: 1 }],
+        { duration: 600, delay: 350 + i * 450, easing: 'ease-out', fill: 'backwards' });
+    });
+
+    setTimeout(() => { if (Sound.musicOn) Sound.startMusic(); }, 900);
+  }
+
+  musicBtn.addEventListener('click', () => {
+    Sound.init();
+    const on = Sound.toggleMusic();
+    musicBtn.classList.toggle('off', !on);
+  });
+
+  /* ================= CAKE ================= */
+  const cake = $('#cake'), wish = $('#wish'), cakeHint = $('#cakeHint');
+  let blown = false;
+  cake.addEventListener('click', () => {
+    Sound.init();
+    blown = !blown;
+    cake.classList.toggle('blown', blown);
+    if (blown) {
+      Sound.blow();
+      cakeHint.textContent = 'Tekrar yakmak için dokun 🔥';
+      setTimeout(() => {
+        const r = cake.getBoundingClientRect();
+        Confetti.burst(r.left + r.width / 2, r.top + r.height * .15, 150);
+        Confetti.rain(110);
+        Sound.yay();
+        wish.classList.add('show');
+        Balloons.burst(8);
+        if (navigator.vibrate) navigator.vibrate([30, 50, 30]);
+      }, 450);
+    } else {
+      cakeHint.textContent = 'Bir dilek tut, mumlara dokun 🕯️';
+      wish.classList.remove('show');
+    }
+  });
+
+  /* ================= PHOTOS ================= */
+  const EXTS = ['jpg', 'jpeg', 'png', 'webp', 'jfif'];
+  document.querySelectorAll('.polaroid img').forEach(img => {
+    let tried = 0;
+    const base = img.getAttribute('src').replace(/\.[a-z]+$/i, '');
+    const fail = () => {
+      if (!img.src.startsWith('data:') && ++tried < EXTS.length) { img.src = `${base}.${EXTS[tried]}`; return; }
+      const fig = img.closest('.polaroid');
+      fig.classList.add('missing');
+      const ph = document.createElement('div');
+      ph.className = 'ph';
+      ph.innerHTML = '🐱<small>fotoğraf gelecek</small>';
+      img.replaceWith(ph);
+    };
+    img.addEventListener('error', fail);
+    if (img.complete && img.naturalWidth === 0) fail();
+  });
+
+  const lb = $('#lightbox'), lbImg = $('#lbImg'), lbCap = $('#lbCap');
+  document.querySelectorAll('.polaroid').forEach(p => p.addEventListener('click', () => {
+    const img = p.querySelector('img');
+    if (!img) return;
+    lbImg.src = img.src; lbImg.alt = img.alt;
+    lbCap.textContent = p.querySelector('figcaption').textContent;
+    lb.hidden = false;
+  }));
+  lb.addEventListener('click', () => { lb.hidden = true; });
+
+  /* ================= REPLAY ================= */
+  $('#replay').addEventListener('click', () => {
+    Sound.stopMusic();
+    content.hidden = true;
+    musicBtn.hidden = true;
+    lb.hidden = true;
+    stage.hidden = false;
+    envSvg.classList.remove('open');
+    envBtn.classList.remove('opening', 'away');
+    $('#hint').classList.remove('gone');
+    blown = false; cake.classList.remove('blown'); wish.classList.remove('show');
+    cakeHint.textContent = 'Bir dilek tut, mumlara dokun 🕯️';
+    Balloons.every(2400, false);
+    window.scrollTo(0, 0);
+    setTimeout(() => { opened = false; }, 500);
+  });
+})();
+</script>
+</body>
+</html>
